@@ -11,6 +11,11 @@ public class Console {
 
     public static void main(String[] args) {
 
+        IOUtils.writeConsole("------Autores------");
+        IOUtils.writeConsole("Christian Passold");
+        IOUtils.writeConsole("Luma Kühl");
+        IOUtils.writeConsole("\n");
+
         try {
             BufferedReader bufferedReader = IOUtils.readFileFromConsole();
             read(bufferedReader);
