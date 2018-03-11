@@ -1,4 +1,4 @@
-package src;
+package src.exercicio1;
 
 import src.util.IOUtils;
 
@@ -6,8 +6,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 public class Console {
-
-    //D:\Documentos\Arquivos\Projetos\FURB\Grafos\teste.txt
 
     public static void main(String[] args) {
 

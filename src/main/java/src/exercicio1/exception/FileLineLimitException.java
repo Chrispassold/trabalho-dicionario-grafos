@@ -1,6 +1,6 @@
-package src.exception;
+package src.exercicio1.exception;
 
-import src.Dictionary;
+import src.exercicio1.Dictionary;
 
 import java.io.IOException;
 

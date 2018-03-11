@@ -1,7 +1,7 @@
-package src;
+package src.exercicio1;
 
-import src.exception.FileLineLimitException;
-import src.exception.LineLengthException;
+import src.exercicio1.exception.FileLineLimitException;
+import src.exercicio1.exception.LineLengthException;
 import src.util.IOUtils;
 
 import java.io.BufferedReader;
