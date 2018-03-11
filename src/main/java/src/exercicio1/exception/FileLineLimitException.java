@@ -6,6 +6,6 @@ import java.io.IOException;
 
 public class FileLineLimitException extends IOException {
     public FileLineLimitException() {
-        super(String.format("Quantidade de linhas excede o limite estabelecido (%d)", Dictionary.FILE_LINE_LIMIT));
+        super(String.format("Quantidade de linhas excede o limite estabelecido (%d)", Dictionary.LIMITE_LINHAS_ARQUIVO));
     }
 }

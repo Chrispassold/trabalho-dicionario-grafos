@@ -10,9 +10,9 @@ import java.util.*;
 
 public class Dictionary {
 
-    public static final int LINE_SIZE_LIMIT = 200;
-    public static final int FILE_LINE_LIMIT = 10000;
-    public static final int DICTIONARY_WORDS_LIMIT = 5000;
+    public static final int LIMITE_CARACTERES_LINHA = 200;
+    public static final int LIMITE_LINHAS_ARQUIVO = 10000;
+    public static final int LIMITE_PALAVRAS_DICIONARIO = 5000;
 
     private Map<Integer, String> lineStringMap;
     private TreeSet<String> words;
@@ -32,13 +32,17 @@ public class Dictionary {
         }
     }
 
+    /**
+     * Regras:
+     *  O dicionario pode ter no maximo {@code LIMITE_PALAVRAS_DICIONARIO} de palavras distintas
+     * */
     private void process() {
 
         Set<Map.Entry<Integer, String>> entries = lineStringMap.entrySet();
 
         for (Map.Entry<Integer, String> line : entries) {
 
-            if (words.size() > DICTIONARY_WORDS_LIMIT) {
+            if (words.size() > LIMITE_PALAVRAS_DICIONARIO) {
                 break;
             }
 
@@ -76,6 +80,11 @@ public class Dictionary {
 
     static class Builder {
 
+        /**
+         * Regras:
+         *  O arquivo deve ter no maximo {@code LIMITE_LINHAS_ARQUIVO} de linhas no arquivo
+         *  O arquivo deve ter no maximo {@code LIMITE_CARACTERES_LINHA} de caracteres por linha
+         * */
         public static Dictionary build(BufferedReader bufferedReader) throws IOException {
 
             Map<Integer, String> lines = new HashMap<Integer, String>();
@@ -90,11 +99,11 @@ public class Dictionary {
                     continue;
                 }
 
-                if (countLine > FILE_LINE_LIMIT) {
+                if (countLine > LIMITE_LINHAS_ARQUIVO) {
                     throw new FileLineLimitException();
                 }
 
-                if (line.length() > LINE_SIZE_LIMIT) {
+                if (line.length() > LIMITE_CARACTERES_LINHA) {
                     throw new LineLengthException(countLine);
                 }
 
