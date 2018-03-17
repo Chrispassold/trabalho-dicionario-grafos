@@ -7,6 +7,13 @@ public class IOUtils {
     private static final String EXIT_APPLICATION = "exit";
 
 
+    public static void printInfo(){
+        IOUtils.writeConsole("------Autores------");
+        IOUtils.writeConsole("Christian Passold");
+        IOUtils.writeConsole("Luma Kühl");
+        IOUtils.writeConsole("\n");
+    }
+
     public static BufferedReader loadFile(String path) throws IOException {
 
         File file = new File(path);
