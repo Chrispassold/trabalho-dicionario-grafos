@@ -14,13 +14,14 @@ public class Main {
     static PriorityQueue<HuffmanNode> nodes = new PriorityQueue<>((o1, o2) -> (o1.value < o2.value) ? -1 : 1);
     static TreeMap<Character, String> codes = new TreeMap<>();
     static BufferedReader bufferedReader;
+    static StringBuilder stringBuilder;
 
-    public static void main(String[] args) {
-
+    public static void main(String[] args) throws IOException {
         IOUtils.printInfo();
 
         try {
             bufferedReader = IOUtils.readFile("D:\\Documentos\\Arquivos\\Projetos\\FURB\\Grafos\\trabalho1\\tmp\\encode.txt");
+            loadStringBuilder();
             initNodes();
             buildTree();
             generateCodes(nodes.peek(), "");
@@ -44,8 +45,16 @@ public class Main {
 
     }
 
+    private static void loadStringBuilder() throws IOException {
+        String line;
+        stringBuilder = new StringBuilder();
+        while ((line = bufferedReader.readLine()) != null) {
+            stringBuilder.append(line);
+        }
+    }
+
     private static void initNodes() throws IOException {
-        characterCounter.load(bufferedReader);
+        characterCounter.load(stringBuilder);
 
         for (Map.Entry<Character, Integer> characterIntegerEntry : characterCounter.getCharacterCounts()) {
             nodes.add(new HuffmanNode(characterIntegerEntry.getValue(), characterIntegerEntry.getKey().toString()));
@@ -53,8 +62,9 @@ public class Main {
     }
 
     private static void buildTree() {
-        while (nodes.size() > 1)
+        while (nodes.size() > 1){
             nodes.add(new HuffmanNode(nodes.poll(), nodes.poll()));
+        }
     }
 
     private static void generateCodes(HuffmanNode node, String s) {
@@ -70,15 +80,14 @@ public class Main {
         }
     }
 
-    private static void encodeFile() throws IOException {
-        String line;
+    private static void encodeFile() {
+        String text = stringBuilder.toString();
         StringBuilder encoded = new StringBuilder();
-        while ((line = bufferedReader.readLine()) != null) {
-            for (int i = 0; i < line.length(); i++) {
-                encoded.append(codes.get(line.charAt(i)));
-            }
+        for (int i = 0; i < text.length(); i++) {
+            encoded.append(codes.get(text.charAt(i)));
         }
 
+        System.out.println("Text: " + text);
         System.out.println("Encoded Text: " + encoded.toString());
     }
 

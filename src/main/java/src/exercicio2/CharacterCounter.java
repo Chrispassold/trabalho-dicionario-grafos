@@ -1,7 +1,5 @@
 package src.exercicio2;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -31,12 +29,12 @@ public class CharacterCounter {
     }
 
     /**
-     * @param bufferedReader reader
+     * @param stringBuilder text
      */
-    public void load(BufferedReader bufferedReader) throws IOException {
-        String line;
-        while ((line = bufferedReader.readLine()) != null) {
-            increment(line);
+    public void load(StringBuilder stringBuilder) {
+        String string = stringBuilder.toString();
+        for (char c : string.toCharArray()) {
+            increment(c);
         }
     }
 
