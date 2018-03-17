@@ -30,8 +30,8 @@ public class Main {
             codes.forEach((k, v) -> System.out.println("'" + k + "' : " + v));
 
             System.out.println("-- Encoding/Decoding --");
-            encodeFile();
-
+            System.out.println("Encoded Text: " + encodeFile());
+            System.out.println("Decoded Text: " + decodeFile());
         } catch (Exception e) {
             IOUtils.logError(e);
         } finally {
@@ -62,7 +62,7 @@ public class Main {
     }
 
     private static void buildTree() {
-        while (nodes.size() > 1){
+        while (nodes.size() > 1) {
             nodes.add(new HuffmanNode(nodes.poll(), nodes.poll()));
         }
     }
@@ -80,15 +80,37 @@ public class Main {
         }
     }
 
-    private static void encodeFile() {
+    private static String encodeFile() {
         String text = stringBuilder.toString();
         StringBuilder encoded = new StringBuilder();
         for (int i = 0; i < text.length(); i++) {
             encoded.append(codes.get(text.charAt(i)));
         }
 
-        System.out.println("Text: " + text);
-        System.out.println("Encoded Text: " + encoded.toString());
+        return encoded.toString();
+    }
+
+    private static String decodeFile() {
+        String encoded = encodeFile();
+        StringBuilder decoded = new StringBuilder();
+        HuffmanNode node = nodes.peek();
+        for (int i = 0; i < encoded.length(); ) {
+            HuffmanNode tmpNode = node;
+            while (tmpNode.zero != null && tmpNode.one != null && i < encoded.length()) {
+                if (encoded.charAt(i) == '1')
+                    tmpNode = tmpNode.one;
+                else tmpNode = tmpNode.zero;
+                i++;
+            }
+
+            if (tmpNode.character.length() == 1) {
+                decoded.append(tmpNode.character);
+            } else {
+                System.out.println("Input not Valid");
+            }
+
+        }
+        return decoded.toString();
     }
 
 }
