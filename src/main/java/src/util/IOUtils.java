@@ -7,7 +7,7 @@ public class IOUtils {
     private static final String EXIT_APPLICATION = "exit";
 
 
-    public static void printInfo(){
+    public static void printInfo() {
         IOUtils.writeConsole("------Autores------");
         IOUtils.writeConsole("Christian Passold");
         IOUtils.writeConsole("Luma Kühl");
@@ -25,7 +25,23 @@ public class IOUtils {
             throw new IOException("Arquivo inválido");
         }
 
+        String extension = getExtension(file);
+        if (!extension.equalsIgnoreCase("txt")) {
+            throw new IOException("O arquivo deve ser um 'txt'");
+        }
+
         return new BufferedReader(new FileReader(path));
+    }
+
+    private static String getExtension(File file) {
+        String extension = "";
+
+        int i = file.getName().lastIndexOf('.');
+        if (i > 0) {
+            extension = file.getName().substring(i + 1);
+        }
+
+        return extension;
     }
 
     public static BufferedReader readFileFromConsole() throws IOException {
