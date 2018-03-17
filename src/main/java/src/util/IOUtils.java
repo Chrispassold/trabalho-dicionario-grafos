@@ -54,7 +54,7 @@ public class IOUtils {
 
 
     public static void logError(Throwable e) {
-        System.out.println("Ocorreu um problema, tente novamente: " + e.getMessage());
+        System.out.println("Ocorreu um problema: " + e.getMessage());
     }
 
     public static void writeConsole(String s) {
