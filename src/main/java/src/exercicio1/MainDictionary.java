@@ -5,7 +5,7 @@ import src.util.IOUtils;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-public class Console {
+public class MainDictionary {
 
     public static void main(String[] args) {
 
