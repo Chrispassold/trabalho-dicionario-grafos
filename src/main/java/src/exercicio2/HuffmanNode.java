@@ -1,28 +1,28 @@
 package src.exercicio2;
 
-import java.util.Comparator;
-
 public class HuffmanNode {
-    char ch;
-    int frequency;
-    HuffmanNode left, right;
+    int value;
+    String character;
+    HuffmanNode zero; //left
+    HuffmanNode one; //right
 
-    HuffmanNode(char ch, int frequency) {
-        this.ch = ch;
-        this.frequency = frequency;
+    public HuffmanNode(int value, String character) {
+        this.value = value;
+        this.character = character;
+        zero = null;
+        one = null;
     }
 
-    HuffmanNode(char ch, int frequency, HuffmanNode left, HuffmanNode right) {
-        this.ch = ch;
-        this.frequency = frequency;
-        this.left = left;
-        this.right = right;
-    }
+    public HuffmanNode(HuffmanNode zero, HuffmanNode one) {
+        this.value = zero.value + one.value;
+        character = zero.character + one.character;
 
-    public static class HuffmanComparator implements Comparator<HuffmanNode> {
-        @Override
-        public int compare(HuffmanNode node1, HuffmanNode node2) {
-            return node1.frequency - node2.frequency;
+        if (zero.value < one.value) {
+            this.one = one;
+            this.zero = zero;
+        } else {
+            this.one = zero;
+            this.zero = one;
         }
     }
 }

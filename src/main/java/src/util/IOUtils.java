@@ -45,36 +45,46 @@ public class IOUtils {
     }
 
     public static BufferedReader readFileFromConsole() throws IOException {
-        boolean exit = false;
-
         writeConsole(String.format("Para sair informe a palavra chave '%s'", EXIT_APPLICATION));
         writeConsole("Informe o caminho do arquivo a ser computado:");
-        String path;
-        BufferedReader fileBufferedReader = null;
 
+        String path;
         do {
             try {
                 path = new BufferedReader(new InputStreamReader(System.in)).readLine();
 
-                if (EXIT_APPLICATION.equalsIgnoreCase(path)) {
-                    System.exit(0);
-                }
+                BufferedReader bufferedReader = readFile(path);
 
-                if (path != null && !path.isEmpty()) {
-                    fileBufferedReader = IOUtils.loadFile(path);
-                    exit = true;
+                if (bufferedReader != null) {
+                    return readFile(path);
                 }
-
 
             } catch (IOException e) {
                 logError(e);
             }
 
-        } while (!exit);
+        } while (true);
+
+    }
+
+
+    public static BufferedReader readFile(String path) throws IOException {
+        BufferedReader fileBufferedReader = null;
+
+        if (EXIT_APPLICATION.equalsIgnoreCase(path)) {
+            System.exit(0);
+        }
+
+        if (path != null && !path.isEmpty()) {
+            fileBufferedReader = IOUtils.loadFile(path);
+        }
+
+        if (fileBufferedReader == null) {
+            throw new NullPointerException("Não foi possível carregar o arquivo");
+        }
 
         return fileBufferedReader;
     }
-
 
     public static void logError(Throwable e) {
         System.out.println("Ocorreu um problema: " + e.getMessage());
