@@ -16,18 +16,19 @@ public class Main {
     static PriorityQueue<HuffmanNode> nodes = new PriorityQueue<>((o1, o2) -> (o1.value < o2.value) ? -1 : 1);
     static TreeMap<Character, String> codes = new TreeMap<>();
     static BufferedReader bufferedReader;
-    static StringBuilder stringBuilder;
+    static StringBuilder fileText;
+    static String encodedText;
 
     public static void main(String[] args) {
         IOUtils.printInfo();
         try {
-            bufferedReader = IOUtils.readFileFromConsole();
-            loadStringBuilder();
-            initNodes();
-            buildTree();
-            generateCodes(nodes.peek(), "");
+            while (true) {
+                bufferedReader = IOUtils.readFileFromConsole();
+                loadFileText();
+                compress();
+            }
 
-            createMenu();
+            //createMenu();
         } catch (Exception e) {
             IOUtils.logError(e);
         } finally {
@@ -40,14 +41,31 @@ public class Main {
                 bufferedReader = null;
             }
         }
+    }
 
+    private static void calculateCompression() {
+
+        if (Main.fileText == null) {
+            return;
+        }
+
+        char[] fileText = Main.fileText.toString().toCharArray();
+        String encodedText = Main.encodedText;
+
+        StringBuilder finalString = new StringBuilder();
+        for (char aFileText : fileText) {
+            int tempChar = (int) aFileText;
+            finalString.append(Integer.toString(tempChar, 2));
+        }
+
+        IOUtils.writeConsole(String.format("File size (bytes): %d", finalString.toString().length()));
+        IOUtils.writeConsole(String.format("Compression size (bytes): %d", encodedText.length()));
     }
 
     public static void createMenu() {
         GenericMenu genericMenu = new GenericMenu();
 
         genericMenu.addMenuItem("1", "Print references", Main::printCodeReferences);
-        genericMenu.addMenuItem("2", "Print encoded file", () -> IOUtils.writeConsole("Encoded Text: " + encodeFile()));
         genericMenu.addMenuItem("3", "Print decoded file", () -> {
             IOUtils.writeConsole("Digite o texto a ser decodificado");
             try {
@@ -61,28 +79,43 @@ public class Main {
         genericMenu.initMenu();
     }
 
+    public static void compress() {
+        System.out.println("-- Compressing --");
+        long time_1 = System.currentTimeMillis();
+        initNodes();
+        buildTree();
+        generateCodes(nodes.peek(), "");
+        encodedText = encodeFile();
+        IOUtils.writeConsole("Encoded Text: " + encodedText);
+
+        long time_2 = System.currentTimeMillis();
+        long difference = time_2 - time_1;
+        System.out.println("Compress time: " + difference + " milliseconds");
+        calculateCompression();
+    }
+
     public static void printCodeReferences() {
         System.out.println("--- Printing Codes ---");
         codes.forEach((k, v) -> System.out.println("'" + k + "' : " + v));
     }
 
 
-    private static void loadStringBuilder() throws IOException {
+    private static void loadFileText() throws IOException {
         String line;
-        stringBuilder = new StringBuilder();
+        fileText = new StringBuilder();
         while ((line = bufferedReader.readLine()) != null) {
-            stringBuilder.append(line);
+            fileText.append(line);
         }
 
-        if (stringBuilder.toString().isEmpty()) {
+        if (fileText.toString().isEmpty()) {
             throw new InvalidParameterException("Arquivo vazio");
         }
 
     }
 
-    private static void initNodes() throws IOException {
-        characterCounter.load(stringBuilder);
-
+    private static void initNodes() {
+        characterCounter.load(fileText);
+        nodes.clear();
         for (Map.Entry<Character, Integer> characterIntegerEntry : characterCounter.getCharacterCounts()) {
             nodes.add(new HuffmanNode(characterIntegerEntry.getValue(), characterIntegerEntry.getKey().toString()));
         }
@@ -95,6 +128,10 @@ public class Main {
     }
 
     private static void generateCodes(HuffmanNode node, String s) {
+        if (s.isEmpty()) {
+            codes.clear();
+        }
+
         if (node != null) {
             if (node.one != null)
                 generateCodes(node.one, s + "1");
@@ -108,8 +145,7 @@ public class Main {
     }
 
     public static String encodeFile() {
-        System.out.println("-- Encoding --");
-        String text = stringBuilder.toString();
+        String text = fileText.toString();
         StringBuilder encoded = new StringBuilder();
         for (int i = 0; i < text.length(); i++) {
             encoded.append(codes.get(text.charAt(i)));
@@ -139,8 +175,6 @@ public class Main {
 
             if (tmpNode.character.length() == 1) {
                 decoded.append(tmpNode.character);
-            } else {
-                System.out.println("Input not Valid");
             }
 
         }
