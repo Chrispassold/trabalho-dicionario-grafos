@@ -32,7 +32,9 @@ public class Main {
             IOUtils.logError(e);
         } finally {
             try {
-                bufferedReader.close();
+                if (bufferedReader != null) {
+                    bufferedReader.close();
+                }
             } catch (IOException ignored) {
             } finally {
                 bufferedReader = null;

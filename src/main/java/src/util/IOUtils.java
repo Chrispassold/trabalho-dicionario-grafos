@@ -32,27 +32,21 @@ public class IOUtils {
         return new BufferedReader(new InputStreamReader(System.in)).readLine();
     }
 
-    public static BufferedReader readFileFromConsole() {
+    public static BufferedReader readFileFromConsole() throws IOException {
         writeConsole(String.format("Para sair informe a palavra chave '%s'", EXIT_APPLICATION));
         writeConsole("Informe o caminho do arquivo a ser computado:");
 
         String path;
-        do {
-            try {
-                path = new BufferedReader(new InputStreamReader(System.in)).readLine();
 
-                BufferedReader bufferedReader = readFile(path);
+        path = new BufferedReader(new InputStreamReader(System.in)).readLine();
 
-                if (bufferedReader != null) {
-                    return readFile(path);
-                }
+        BufferedReader bufferedReader = readFile(path);
 
-            } catch (IOException e) {
-                logError(e);
-            }
+        if (bufferedReader != null) {
+            return readFile(path);
+        }
 
-        } while (true);
-
+        return null;
     }
 
     public static void exit(){
