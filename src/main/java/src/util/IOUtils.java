@@ -25,26 +25,14 @@ public class IOUtils {
             throw new IOException("Arquivo inválido");
         }
 
-        String extension = getExtension(file);
-        if (!extension.equalsIgnoreCase("txt")) {
-            throw new IOException("O arquivo deve ser um 'txt'");
-        }
-
         return new BufferedReader(new FileReader(path));
     }
 
-    private static String getExtension(File file) {
-        String extension = "";
-
-        int i = file.getName().lastIndexOf('.');
-        if (i > 0) {
-            extension = file.getName().substring(i + 1);
-        }
-
-        return extension;
+    public static String readFromConsole() throws IOException {
+        return new BufferedReader(new InputStreamReader(System.in)).readLine();
     }
 
-    public static BufferedReader readFileFromConsole() throws IOException {
+    public static BufferedReader readFileFromConsole() {
         writeConsole(String.format("Para sair informe a palavra chave '%s'", EXIT_APPLICATION));
         writeConsole("Informe o caminho do arquivo a ser computado:");
 
@@ -67,12 +55,15 @@ public class IOUtils {
 
     }
 
+    public static void exit(){
+        System.exit(0);
+    }
 
     public static BufferedReader readFile(String path) throws IOException {
         BufferedReader fileBufferedReader = null;
 
         if (EXIT_APPLICATION.equalsIgnoreCase(path)) {
-            System.exit(0);
+            exit();
         }
 
         if (path != null && !path.isEmpty()) {
@@ -88,6 +79,10 @@ public class IOUtils {
 
     public static void logError(Throwable e) {
         System.out.println("Ocorreu um problema: " + e.getMessage());
+    }
+
+    public static void logError(String s) {
+        System.out.println("Ocorreu um problema: " + s);
     }
 
     public static void writeConsole(String s) {

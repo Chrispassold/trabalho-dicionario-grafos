@@ -1,9 +1,11 @@
 package src.exercicio2;
 
+import src.exercicio2.menu.GenericMenu;
 import src.util.IOUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.security.InvalidParameterException;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.TreeMap;
@@ -16,22 +18,16 @@ public class Main {
     static BufferedReader bufferedReader;
     static StringBuilder stringBuilder;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         IOUtils.printInfo();
-
         try {
-            bufferedReader = IOUtils.readFile("D:\\Documentos\\Arquivos\\Projetos\\FURB\\Grafos\\trabalho1\\tmp\\encode.txt");
+            bufferedReader = IOUtils.readFileFromConsole();
             loadStringBuilder();
             initNodes();
             buildTree();
             generateCodes(nodes.peek(), "");
 
-            System.out.println("--- Printing Codes ---");
-            codes.forEach((k, v) -> System.out.println("'" + k + "' : " + v));
-
-            System.out.println("-- Encoding/Decoding --");
-            System.out.println("Encoded Text: " + encodeFile());
-            System.out.println("Decoded Text: " + decodeFile());
+            createMenu();
         } catch (Exception e) {
             IOUtils.logError(e);
         } finally {
@@ -45,12 +41,41 @@ public class Main {
 
     }
 
+    public static void createMenu() {
+        GenericMenu genericMenu = new GenericMenu();
+
+        genericMenu.addMenuItem("1", "Print references", Main::printCodeReferences);
+        genericMenu.addMenuItem("2", "Print encoded file", () -> IOUtils.writeConsole("Encoded Text: " + encodeFile()));
+        genericMenu.addMenuItem("3", "Print decoded file", () -> {
+            IOUtils.writeConsole("Digite o texto a ser decodificado");
+            try {
+                String s = IOUtils.readFromConsole();
+                IOUtils.writeConsole("Decoded Text: " + decodeText(s));
+            } catch (Exception e) {
+                IOUtils.logError(e);
+            }
+        });
+
+        genericMenu.initMenu();
+    }
+
+    public static void printCodeReferences() {
+        System.out.println("--- Printing Codes ---");
+        codes.forEach((k, v) -> System.out.println("'" + k + "' : " + v));
+    }
+
+
     private static void loadStringBuilder() throws IOException {
         String line;
         stringBuilder = new StringBuilder();
         while ((line = bufferedReader.readLine()) != null) {
             stringBuilder.append(line);
         }
+
+        if (stringBuilder.toString().isEmpty()) {
+            throw new InvalidParameterException("Arquivo vazio");
+        }
+
     }
 
     private static void initNodes() throws IOException {
@@ -80,7 +105,8 @@ public class Main {
         }
     }
 
-    private static String encodeFile() {
+    public static String encodeFile() {
+        System.out.println("-- Encoding --");
         String text = stringBuilder.toString();
         StringBuilder encoded = new StringBuilder();
         for (int i = 0; i < text.length(); i++) {
@@ -90,8 +116,14 @@ public class Main {
         return encoded.toString();
     }
 
-    private static String decodeFile() {
-        String encoded = encodeFile();
+    public static String decodeText(String encoded) throws InvalidParameterException {
+
+        if (encoded == null || encoded.isEmpty()) {
+            throw new InvalidParameterException("Valor inválido");
+        }
+
+        System.out.println("-- Decoding --");
+
         StringBuilder decoded = new StringBuilder();
         HuffmanNode node = nodes.peek();
         for (int i = 0; i < encoded.length(); ) {
