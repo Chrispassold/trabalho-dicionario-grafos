@@ -22,13 +22,11 @@ public class Main {
     public static void main(String[] args) {
         IOUtils.printInfo();
         try {
-            while (true) {
-                bufferedReader = IOUtils.readFileFromConsole();
-                loadFileText();
-                compress();
-            }
+            bufferedReader = IOUtils.readFileFromConsole();
+            loadFileText();
+            compress();
 
-            //createMenu();
+            createMenu();
         } catch (Exception e) {
             IOUtils.logError(e);
         } finally {
@@ -49,17 +47,12 @@ public class Main {
             return;
         }
 
-        char[] fileText = Main.fileText.toString().toCharArray();
-        String encodedText = Main.encodedText;
+        Float fileTextBits = (float) (Main.fileText.toString().length() * 8);
+        Float encodedTextBits = (float) Main.encodedText.length(); // already in bits
 
-        StringBuilder finalString = new StringBuilder();
-        for (char aFileText : fileText) {
-            int tempChar = (int) aFileText;
-            finalString.append(Integer.toString(tempChar, 2));
-        }
-
-        IOUtils.writeConsole(String.format("File size (bytes): %d", finalString.toString().length()));
-        IOUtils.writeConsole(String.format("Compression size (bytes): %d", encodedText.length()));
+        IOUtils.writeConsole(String.format("File size: %d", fileTextBits.intValue()));
+        IOUtils.writeConsole(String.format("Compression size: %d", encodedTextBits.intValue()));
+        IOUtils.writeConsole(String.format("Compression rate : %1$,.2f%%", ((1 - (encodedTextBits / fileTextBits)) * 100)));
     }
 
     public static void createMenu() {
@@ -86,7 +79,6 @@ public class Main {
         buildTree();
         generateCodes(nodes.peek(), "");
         encodedText = encodeFile();
-        IOUtils.writeConsole("Encoded Text: " + encodedText);
 
         long time_2 = System.currentTimeMillis();
         long difference = time_2 - time_1;
