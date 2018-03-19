@@ -9,10 +9,7 @@ public class MainDictionary {
 
     public static void main(String[] args) {
 
-        IOUtils.writeConsole("------Autores------");
-        IOUtils.writeConsole("Christian Passold");
-        IOUtils.writeConsole("Luma Kühl");
-        IOUtils.writeConsole("\n");
+        IOUtils.printInfo();
 
         try {
             BufferedReader bufferedReader = IOUtils.readFileFromConsole();

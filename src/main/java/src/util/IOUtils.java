@@ -7,6 +7,13 @@ public class IOUtils {
     private static final String EXIT_APPLICATION = "exit";
 
 
+    public static void printInfo() {
+        IOUtils.writeConsole("------Autores------");
+        IOUtils.writeConsole("Christian Passold");
+        IOUtils.writeConsole("Luma Kühl");
+        IOUtils.writeConsole("\n");
+    }
+
     public static BufferedReader loadFile(String path) throws IOException {
 
         File file = new File(path);
@@ -21,40 +28,55 @@ public class IOUtils {
         return new BufferedReader(new FileReader(path));
     }
 
-    public static BufferedReader readFileFromConsole() throws IOException {
-        boolean exit = false;
+    public static String readFromConsole() throws IOException {
+        return new BufferedReader(new InputStreamReader(System.in)).readLine();
+    }
 
+    public static BufferedReader readFileFromConsole() throws IOException {
         writeConsole(String.format("Para sair informe a palavra chave '%s'", EXIT_APPLICATION));
         writeConsole("Informe o caminho do arquivo a ser computado:");
+
         String path;
+
+        path = new BufferedReader(new InputStreamReader(System.in)).readLine();
+
+        BufferedReader bufferedReader = readFile(path);
+
+        if (bufferedReader != null) {
+            return readFile(path);
+        }
+
+        return null;
+    }
+
+    public static void exit(){
+        System.exit(0);
+    }
+
+    public static BufferedReader readFile(String path) throws IOException {
         BufferedReader fileBufferedReader = null;
 
-        do {
-            try {
-                path = new BufferedReader(new InputStreamReader(System.in)).readLine();
+        if (EXIT_APPLICATION.equalsIgnoreCase(path)) {
+            exit();
+        }
 
-                if (EXIT_APPLICATION.equalsIgnoreCase(path)) {
-                    System.exit(0);
-                }
+        if (path != null && !path.isEmpty()) {
+            fileBufferedReader = IOUtils.loadFile(path);
+        }
 
-                if (path != null && !path.isEmpty()) {
-                    fileBufferedReader = IOUtils.loadFile(path);
-                    exit = true;
-                }
-
-
-            } catch (IOException e) {
-                logError(e);
-            }
-
-        } while (!exit);
+        if (fileBufferedReader == null) {
+            throw new NullPointerException("Não foi possível carregar o arquivo");
+        }
 
         return fileBufferedReader;
     }
 
-
     public static void logError(Throwable e) {
         System.out.println("Ocorreu um problema: " + e.getMessage());
+    }
+
+    public static void logError(String s) {
+        System.out.println("Ocorreu um problema: " + s);
     }
 
     public static void writeConsole(String s) {
