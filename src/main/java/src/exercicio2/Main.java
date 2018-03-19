@@ -59,7 +59,7 @@ public class Main {
         GenericMenu genericMenu = new GenericMenu();
 
         genericMenu.addMenuItem("1", "Print references", Main::printCodeReferences);
-        genericMenu.addMenuItem("3", "Print decoded file", () -> {
+        genericMenu.addMenuItem("2", "Print decoded file", () -> {
             IOUtils.writeConsole("Digite o texto a ser decodificado");
             try {
                 String s = IOUtils.readFromConsole();
