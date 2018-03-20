@@ -50,8 +50,8 @@ public class Main {
         Float fileTextBits = (float) (Main.fileText.toString().length() * 8);
         Float encodedTextBits = (float) Main.encodedText.length(); // already in bits
 
-        IOUtils.writeConsole(String.format("File size: %d", fileTextBits.intValue()));
-        IOUtils.writeConsole(String.format("Compression size: %d", encodedTextBits.intValue()));
+        IOUtils.writeConsole(String.format("File size: %d bytes", fileTextBits.intValue()/8));
+        IOUtils.writeConsole(String.format("Compression size: %d bytes", encodedTextBits.intValue()/8));
         IOUtils.writeConsole(String.format("Compression rate : %1$,.2f%%", ((1 - (encodedTextBits / fileTextBits)) * 100)));
     }
 
