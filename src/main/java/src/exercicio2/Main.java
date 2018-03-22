@@ -170,7 +170,7 @@ public class Main {
     public static String decodeText(String encoded) throws InvalidParameterException {
 
         if (encoded == null || !encoded.matches("[01]+")) {
-            throw new InvalidParameterException("Valor inválido");
+            throw new InvalidParameterException("Valor deve conter apenas 1 ou 0");
         }
 
         System.out.println("-- Decoding --");
