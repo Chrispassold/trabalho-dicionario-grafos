@@ -154,7 +154,7 @@ public class Main {
         }
     }
 
-    public static String encodeFile() throws InvalidParameterException{
+    public static String encodeFile() throws InvalidParameterException {
         String text = fileText.toString();
         return encodeText(text);
     }
@@ -163,7 +163,7 @@ public class Main {
         StringBuilder encoded = new StringBuilder();
         for (int i = 0; i < text.length(); i++) {
             char key = text.charAt(i);
-            if(!codes.containsKey(key)){
+            if (!codes.containsKey(key)) {
                 throw new InvalidParameterException(String.format("Caracter '%s' não existe na arvore", key));
             }
             encoded.append(codes.get(key));
