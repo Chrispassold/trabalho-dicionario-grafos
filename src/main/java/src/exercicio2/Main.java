@@ -50,20 +50,33 @@ public class Main {
         Float fileTextBits = (float) (Main.fileText.toString().length() * 8);
         Float encodedTextBits = (float) Main.encodedText.length(); // already in bits
 
-        IOUtils.writeConsole(String.format("File size: %d bytes", fileTextBits.intValue()/8));
-        IOUtils.writeConsole(String.format("Compression size: %d bytes", encodedTextBits.intValue()/8));
+        IOUtils.writeConsole(String.format("File size: %d bytes", fileTextBits.intValue() / 8));
+        IOUtils.writeConsole(String.format("Compression size: %d bytes", encodedTextBits.intValue() / 8));
         IOUtils.writeConsole(String.format("Compression rate : %1$,.2f%%", ((1 - (encodedTextBits / fileTextBits)) * 100)));
     }
 
     public static void createMenu() {
         GenericMenu genericMenu = new GenericMenu();
 
-        genericMenu.addMenuItem("1", "Print references", Main::printCodeReferences);
-        genericMenu.addMenuItem("2", "Print decoded file", () -> {
+        genericMenu.addMenuItem("1", "Exibir arvore e referencias", Main::printCodeReferences);
+
+        genericMenu.addMenuItem("2", "Exibir arquivo codificado", () -> IOUtils.writeConsole(encodedText));
+
+        genericMenu.addMenuItem("3", "Codificar texto baseado na arvore", () -> {
+            IOUtils.writeConsole("Digite o texto a ser codificado");
+            try {
+                String s = IOUtils.readFromConsole();
+                IOUtils.writeConsole("Texto codificado: " + encodeText(s));
+            } catch (Exception e) {
+                IOUtils.logError(e);
+            }
+        });
+
+        genericMenu.addMenuItem("4", "Decodificar texto baseado na arvore", () -> {
             IOUtils.writeConsole("Digite o texto a ser decodificado");
             try {
                 String s = IOUtils.readFromConsole();
-                IOUtils.writeConsole("Decoded Text: " + decodeText(s));
+                IOUtils.writeConsole("Texto decodificado: " + decodeText(s));
             } catch (Exception e) {
                 IOUtils.logError(e);
             }
@@ -72,7 +85,7 @@ public class Main {
         genericMenu.initMenu();
     }
 
-    public static void compress() {
+    public static void compress() throws InvalidParameterException{
         System.out.println("-- Compressing --");
         long time_1 = System.currentTimeMillis();
         initNodes();
@@ -136,11 +149,19 @@ public class Main {
         }
     }
 
-    public static String encodeFile() {
+    public static String encodeFile() throws InvalidParameterException{
         String text = fileText.toString();
+        return encodeText(text);
+    }
+
+    public static String encodeText(String text) throws InvalidParameterException {
         StringBuilder encoded = new StringBuilder();
         for (int i = 0; i < text.length(); i++) {
-            encoded.append(codes.get(text.charAt(i)));
+            char key = text.charAt(i);
+            if(!codes.containsKey(key)){
+                throw new InvalidParameterException(String.format("Caractere '%s' não existe na arvore", key));
+            }
+            encoded.append(codes.get(key));
         }
 
         return encoded.toString();
@@ -148,7 +169,7 @@ public class Main {
 
     public static String decodeText(String encoded) throws InvalidParameterException {
 
-        if (encoded == null || encoded.isEmpty()) {
+        if (encoded == null || !encoded.matches("[01]+")) {
             throw new InvalidParameterException("Valor inválido");
         }
 
