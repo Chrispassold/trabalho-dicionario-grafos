@@ -1,5 +1,6 @@
 package src.exercicio1;
 
+import src.util.FileHelper;
 import src.util.IOUtils;
 
 import java.io.BufferedReader;
@@ -12,9 +13,11 @@ public class MainDictionary {
         IOUtils.printInfo();
 
         try {
-            BufferedReader bufferedReader = IOUtils.readFileFromConsole();
+
+            final FileHelper fileHelper = IOUtils.readFileFromConsole();
+            BufferedReader bufferedReader = fileHelper.bufferedReader;
             read(bufferedReader);
-        } catch (IOException e) {
+        } catch (Exception e) {
             IOUtils.logError(e);
         }
 

@@ -32,43 +32,22 @@ public class IOUtils {
         return new BufferedReader(new InputStreamReader(System.in)).readLine();
     }
 
-    public static BufferedReader readFileFromConsole() throws IOException {
+    public static FileHelper readFileFromConsole() throws IOException, NullPointerException {
         writeConsole(String.format("Para sair informe a palavra chave '%s'", EXIT_APPLICATION));
         writeConsole("Informe o caminho do arquivo a ser computado:");
-
-        String path;
-
-        path = new BufferedReader(new InputStreamReader(System.in)).readLine();
-
-        BufferedReader bufferedReader = readFile(path);
-
-        if (bufferedReader != null) {
-            return readFile(path);
-        }
-
-        return null;
+        return readFile(new BufferedReader(new InputStreamReader(System.in)).readLine());
     }
 
-    public static void exit(){
+    public static void exit() {
         System.exit(0);
     }
 
-    public static BufferedReader readFile(String path) throws IOException {
-        BufferedReader fileBufferedReader = null;
-
+    public static FileHelper readFile(String path) throws IOException, NullPointerException {
         if (EXIT_APPLICATION.equalsIgnoreCase(path)) {
             exit();
         }
 
-        if (path != null && !path.isEmpty()) {
-            fileBufferedReader = IOUtils.loadFile(path);
-        }
-
-        if (fileBufferedReader == null) {
-            throw new NullPointerException("Não foi possível carregar o arquivo");
-        }
-
-        return fileBufferedReader;
+        return new FileHelper(path);
     }
 
     public static void logError(Throwable e) {
@@ -82,5 +61,29 @@ public class IOUtils {
     public static void writeConsole(String s) {
         System.out.println(s);
     }
+
+    public static void writeToFile(String toWrite, String filename) throws IOException {
+        BufferedWriter writer = null;
+        try {
+            //create a temporary file
+            File logFile = new File(String.format("files/%s.out", filename));
+
+            writer = new BufferedWriter(new FileWriter(logFile));
+            writer.write(toWrite);
+        } finally {
+            try {
+                // Close the writer regardless of what happens...
+                if (writer != null) {
+                    writer.close();
+                }
+            } catch (Exception ignore) {
+            }
+        }
+    }
+
+    public static void writeToFile(StringBuilder toWrite, String filename) throws IOException {
+        writeToFile(toWrite.toString(), filename);
+    }
+
 
 }

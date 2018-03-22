@@ -1,6 +1,7 @@
 package src.exercicio2;
 
 import src.exercicio2.menu.GenericMenu;
+import src.util.FileHelper;
 import src.util.IOUtils;
 
 import java.io.BufferedReader;
@@ -18,11 +19,15 @@ public class Main {
     static BufferedReader bufferedReader;
     static StringBuilder fileText;
     static String encodedText;
+    static FileHelper fileHelper;
 
     public static void main(String[] args) {
         IOUtils.printInfo();
         try {
-            bufferedReader = IOUtils.readFileFromConsole();
+
+            fileHelper = IOUtils.readFileFromConsole();
+            bufferedReader = fileHelper.bufferedReader;
+
             loadFileText();
             compress();
 
@@ -85,14 +90,14 @@ public class Main {
         genericMenu.initMenu();
     }
 
-    public static void compress() throws InvalidParameterException{
+    public static void compress() throws InvalidParameterException, IOException {
         System.out.println("-- Compressing --");
         long time_1 = System.currentTimeMillis();
         initNodes();
         buildTree();
         generateCodes(nodes.peek(), "");
         encodedText = encodeFile();
-
+        IOUtils.writeToFile(encodedText, fileHelper.name);
         long time_2 = System.currentTimeMillis();
         long difference = time_2 - time_1;
         System.out.println("Compress time: " + difference + " milliseconds");
