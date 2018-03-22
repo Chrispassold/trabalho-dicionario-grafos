@@ -173,8 +173,6 @@ public class Main {
             throw new InvalidParameterException("Valor deve conter apenas 1 ou 0");
         }
 
-        System.out.println("-- Decoding --");
-
         StringBuilder decoded = new StringBuilder();
         HuffmanNode node = nodes.peek();
         for (int i = 0; i < encoded.length(); ) {
