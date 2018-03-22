@@ -70,6 +70,7 @@ public class IOUtils {
 
             writer = new BufferedWriter(new FileWriter(logFile));
             writer.write(toWrite);
+            writeConsole("Arquivo 'out' está no endereço: " + logFile.getAbsolutePath());
         } finally {
             try {
                 // Close the writer regardless of what happens...

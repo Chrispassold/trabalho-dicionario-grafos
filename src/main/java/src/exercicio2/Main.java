@@ -30,6 +30,7 @@ public class Main {
 
             loadFileText();
             compress();
+            IOUtils.writeToFile(decodeText(encodedText), fileHelper.name);
 
             createMenu();
         } catch (Exception e) {
@@ -97,7 +98,6 @@ public class Main {
         buildTree();
         generateCodes(nodes.peek(), "");
         encodedText = encodeFile();
-        IOUtils.writeToFile(encodedText, fileHelper.name);
         long time_2 = System.currentTimeMillis();
         long difference = time_2 - time_1;
         System.out.println("Compress time: " + difference + " milliseconds");
