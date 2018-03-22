@@ -2,8 +2,8 @@
 
 Acadêmicos: Christian Passold, Luma Kühl
 
-##Exemplos
-###Dicionário
+## Exemplos
+### Dicionário
 
 Para começar, informe o caminho do arquivo a ser computado.
 
@@ -50,7 +50,7 @@ yqaojq
 ------------- FIM DICIONARIO -------------------
 ```
 
-###Huffmam
+### Huffmam
 
 Para começar, informe o caminho do arquivo a ser computado.
 
