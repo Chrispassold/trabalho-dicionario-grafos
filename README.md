@@ -7,13 +7,13 @@ Acadêmicos: Christian Passold, Luma Kühl
 
 Para começar, informe o caminho do arquivo a ser computado.
 
-```text
+```
 Informe o caminho do arquivo a ser computado:
 files/dicionario.txt
 ```
 
 O resultado será:
-```text
+```
 ------------- INICIO DICIONARIO -------------------
 a
 aa
@@ -54,7 +54,7 @@ yqaojq
 
 Para começar, informe o caminho do arquivo a ser computado.
 
-```text
+```
 Informe o caminho do arquivo a ser computado:
 files/huffmam.in
 ```
@@ -63,7 +63,7 @@ Opções:
 
  `1` Mostra os indíces gerados:
 
-```text
+```
 --- Printing Codes ---
 'E' : 111110
 'a' : 110
@@ -83,14 +83,14 @@ Opções:
 
 `3` Codificar texto baseando-se na árvore
 
-```text
+```
 Digite o texto a ser codificado:
 huffmam
 Texto codificado: 00010111111111111111111011011110
 ```
 
 `4` Decodificar texto baseado na árvore
-```text
+```
 Digite o texto a ser decodificado:
 00010111111111111111111011011110
 Texto decodificado: huffmam
