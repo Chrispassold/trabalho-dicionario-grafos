@@ -30,6 +30,12 @@ public class Main {
 
             loadFileText();
             compress();
+
+            if(codes.size() == 1){
+                HuffmanNode peek = nodes.peek();
+                throw new OnlyOneCharacterException(peek.character, peek.value);
+            }
+
             IOUtils.writeToFile(decodeText(encodedText), fileHelper.name);
 
             createMenu();
